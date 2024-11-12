@@ -32,13 +32,13 @@ if ($result->num_rows > 0) {
     } else {
         // Senha incorreta
         $_SESSION['error'] = "Senha incorreta!";
-        header('Location: login.php');
+        header('Location: indexLogin.php');
         exit();
     }
 } else {
     // Usuário não encontrado
     $_SESSION['error'] = "Usuário não encontrado!";
-    header('Location: login.php');
+    header('Location: indexLogin.php');
     exit();
 }
 
