@@ -13,7 +13,7 @@ if (!isset($_SESSION['username'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Mercantil Lima - Dashboard</title>
-    <link rel="stylesheet" href="style.css"> <!-- Se você estiver utilizando CSS externo -->
+    <link rel="stylesheet" href="/dashboard.css"> <!-- Se você estiver utilizando CSS externo -->
 </head>
 <body>
     <header>

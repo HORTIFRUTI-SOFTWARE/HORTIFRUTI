@@ -13,7 +13,7 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 // Verificar se o usuário existe
-$sql = "SELECT * FROM usuarios WHERE nome_usuario = ?"; // Alterado para nome_usuario
+$sql = "SELECT * FROM usuarios WHERE NOME_USUARIO = ?"; // Alterado para nome_usuario
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('s', $username);
 $stmt->execute();
