@@ -4,7 +4,7 @@ include('config.php'); // Conexão com o banco de dados
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Redireciona para login se não estiver logado
+    header("Location: indexLogin.php"); // Redireciona para login se não estiver logado
     exit();
 }
 
