@@ -9,8 +9,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $NOME = $_POST['NOME'];
-    $KG = $_POST['KG'];
+    $nome = $_POST['nome'];
+    $qntd_kg = $_POST['qntd_kg'];
     $preco_unitario = $_POST['preco_unitario'];
 
     // Preparar e executar a inserção no banco de dados

@@ -9,18 +9,15 @@ if (!isset($_SESSION['username'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $COD_VENDA = $_POST['COD_VENDA'];
-    $DATA_VENDA= $_POST['DATA_COMPRA'];
-    $QUANTIDADE	= $_POST['QUANTIDADE'];
-    $PRECO_TOTAL = $_POST['PRECO_TOTAL'];
-    $KG	= $_POST['KG'];
-    $COD_PRODUTO= $_POST['COD_PRODUTO'];
-    
+    $id_produto = $_POST['id_produto'];
+    $qntd_kg = $_POST['qntd_kg'];
+    $preco_unitario = $_POST['preco_unitario'];
+    $total = $qntd_kg * $preco_unitario;
 
     // Preparar e executar a inserção no banco de dados
-    $query = "INSERT INTO vendas (COD_VENDA, DATA_COMPRA, QUANTIDADE, PRECO_TOTAL,KG,COD_PRODUTO) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO vendas (id_produto, qntd_kg, preco_unitario, total) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('iddd', $COD_VENDA, $DATA_COMPRA, $QUANTIDADE, $PRECO_TOTAL,$KG,$COD_PRODUTO); // 'i' para inteiro, 'd' para decimal
+    $stmt->bind_param('iddd', $id_produto, $qntd_kg, $preco_unitario, $total); // 'i' para inteiro, 'd' para decimal
     if ($stmt->execute()) {
         echo "Venda registrada com sucesso!";
     } else {
@@ -29,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Consultar produtos para exibir no formulário
-$query_produto = "SELECT * FROM produto";
-$result_produto = $conn->query($query_produto);
+$query_produtos = "SELECT * FROM produtos";
+$result_produtos = $conn->query($query_produtos);
 
 // Consultar o total das vendas
-$query_PRECO_TOTAL = "SELECT SUM(PRECO_TOTAL) AS PRECO_TOTAL FROM venda";
-$result_PRECO_TOTAL = $conn->query($query_PRECO_TOTAL);
-$PRECO_TOTAL = $result_PRECO_TOTAL->fetch_assoc()['PRECO_TOTAL'];
+$query_total_vendas = "SELECT SUM(total) AS total_vendas FROM vendas";
+$result_total_vendas = $conn->query($query_total_vendas);
+$total_vendas = $result_total_vendas->fetch_assoc()['total_vendas'];
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +61,7 @@ $PRECO_TOTAL = $result_PRECO_TOTAL->fetch_assoc()['PRECO_TOTAL'];
             </select><br>
 
             <label for="qntd_kg">Quantidade (kg)</label>
-            <input type="number" name="KG" step="0.01" required><br>
+            <input type="number" name="qntd_kg" step="0.01" required><br>
 
             <label for="preco_unitario">Preço Unitário (por kg)</label>
             <input type="number" name="preco_unitario" step="0.01" required><br>
@@ -73,9 +70,9 @@ $PRECO_TOTAL = $result_PRECO_TOTAL->fetch_assoc()['PRECO_TOTAL'];
         </form>
     </section>
 
-    <section id="PRECO_TOTAL">
+    <section id="total_vendas">
         <h2>Total de Vendas Registradas</h2>
-        <p>Valor total de todas as vendas: R$ <?php echo number_format($PRECO_TOTAL, 2, ',', '.'); ?></p>
+        <p>Valor total de todas as vendas: R$ <?php echo number_format($total_vendas, 2, ',', '.'); ?></p>
     </section>
 </body>
 </html>

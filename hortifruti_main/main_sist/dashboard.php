@@ -12,29 +12,104 @@ if (!isset($_SESSION['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Mercantil Lima - Dashboard</title>
-    <link rel="stylesheet" href="stt-css\dashboard.css">
-    
-<!-- Se você estiver utilizando CSS externo -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="..\src\css\dashboard.css">
+    <title>Sidebar</title>
 </head>
 <body>
-    <header>
-        <h1>Bem-vindo ao Sistema Mercantil Lima, <?php echo $_SESSION['username']; ?>!</h1>
-        <nav>
-            <ul>
-                <li><a href="registro_produto.php">Registrar Produto</a></li>
-                <li><a href="relatorios.php">Relatórios</a></li>
-                <li><a href="estoque.php">Gerenciar Estoque</a></li>
-                <li><a href="comprar_produto.php">Compras</a></li>
-                <li><a href="vender_produto.php">Vendas</a></li>
-                <li><a href="perdas.php">Perdas</a></li>
-                <li><a href="login.php">Sair</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav id="sidebar">
+        <div id="sidebar_content">
+            <div id="user">
+            <i class="fa-solid fa-user"></i>
+    
+                <p id="user_infos">
+                    <span class="item-description">
+                    <?php echo $_SESSION['username']; ?>
+                    </span>
+                </p>
+            </div>
+    
+            <ul id="side_items">
+            <li class="side-item active">
+                    <a href="#">
+                        <i class="fa-solid fa-box"></i>
+                        <span class="item-description">
+                            Dashboard
+                        </span>
+                    </a>
+                </li>
 
-    <section id="dashboard">
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fas fa-plus-circle"></i>
+                        <span class="item-description">
+                            Registrar Produto
+                        </span>
+                    </a>
+                </li>
+    
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span class="item-description">
+                            Relatórios
+                        </span>
+                    </a>
+                </li>
+    
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fas fa-cogs"></i>
+                        <span class="item-description">
+                            Gerenciar Estoque
+                        </span>
+                    </a>
+                </li>
+    
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="item-description">
+                            Compras
+                        </span>
+                    </a>
+                </li>
+    
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span class="item-description">
+                            Vendas
+                        </span>
+                    </a>
+                </li>
+    
+                <li class="side-item">
+                    <a href="#">
+                        <i class="fas fa-ban"></i>
+                        <span class="item-description">
+                            Perdas
+                        </span>
+                    </a>
+                </li>
+            </ul>
+    
+            <button id="open_btn">
+                <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <div id="logout">
+            <button id="logout_btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="item-description">
+                    Logout
+                </span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
         <h2>Funções do Sistema</h2>
         <div class="cards">
             <div class="card">
@@ -73,7 +148,7 @@ if (!isset($_SESSION['username'])) {
                 <a href="perdas.php">Ir para Perdas</a>
             </div>
         </div>
-    </section>
-
+    </main>
+    <script src="..\src\js\dashboard.js"></script>
 </body>
 </html>

@@ -9,20 +9,15 @@ if (!isset($_SESSION['username'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $COD_COMPRA = $_POST['COD_COMPRA'];
-    $QUANTIDADE	= $_POST['QUANTIDADE'];
-    $KG	= $_POST['KG'];
-    $NOME= $_POST['NOME'];
-    $NUMERO_NOTA_FISCAL= $_POST['NUMERO_NOTA_FISCAL'];
-    $DATA_COMPRA = $_POST['DATA_COMPRA'];
-    $PRECO_COMPRA = $_POST['PRECO_COMPRA'];
-    $PRECO_VENDA = $_POST['PRECO_VENDA'];
-    $PRECO_TOTAL = $_POST['PRECO_TOTAL'];
+    $id_produto = $_POST['id_produto'];
+    $qntd_kg = $_POST['qntd_kg'];
+    $preco_unitario = $_POST['preco_unitario'];
+    $total = $qntd_kg * $preco_unitario;
 
     // Preparar e executar a inserção no banco de dados
-    $query = "INSERT INTO compras (COD_COMPRA, QUANTIDADE, KG, NOME,NUMERO_NOTA_FISCAL,DATA_COMPRA,PRECO_COMPRA,PRECO_VENDA,PRECO_TOTAL) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO compras (id_produto, qntd_kg, preco_unitario, total) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('iidsisddd', $COD_COMPRA, $QUANTIDADE, $KG, $NOME, $NUMERO_NOTA_FISCAL, $DATA_COMPRA, $PRECO_COMPRA,$PRECO_VENDA, $PRECO_TOTAL); // 'i' para inteiro, 'd' para decimal
+    $stmt->bind_param('iddd', $id_produto, $qntd_kg, $preco_unitario, $total); // 'i' para inteiro, 'd' para decimal
     if ($stmt->execute()) {
         echo "Compra registrada com sucesso!";
     } else {
@@ -31,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Consultar produtos para exibir no formulário
-$query_produto = "SELECT * FROM produto";
-$result_produto = $conn->query($query_produto);
+$query_produtos = "SELECT * FROM produtos";
+$result_produtos = $conn->query($query_produtos);
 ?>
 
 <!DOCTYPE html>
