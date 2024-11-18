@@ -13,7 +13,8 @@ if (!isset($_SESSION['username'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="..\src\css\dashboard.css">
+    <link rel="stylesheet" href="..\src/css/dashb.css">
+
     <title>Sidebar</title>
 </head>
 <body>
@@ -40,16 +41,16 @@ if (!isset($_SESSION['username'])) {
                 </li>
 
                 <li class="side-item">
-                    <a href="#">
+                    <a href="adicionar_produto.php">
                         <i class="fas fa-plus-circle"></i>
                         <span class="item-description">
-                            Registrar Produto
+                            Incluir Quantidade
                         </span>
                     </a>
                 </li>
     
                 <li class="side-item">
-                    <a href="#">
+                    <a href="../esqueleto/relatorio.html">
                         <i class="fa-solid fa-chart-line"></i>
                         <span class="item-description">
                             Relatórios
@@ -58,16 +59,16 @@ if (!isset($_SESSION['username'])) {
                 </li>
     
                 <li class="side-item">
-                    <a href="#">
+                    <a href="buscar_estoque.php">
                         <i class="fas fa-cogs"></i>
                         <span class="item-description">
-                            Gerenciar Estoque
+                            Estoque
                         </span>
                     </a>
                 </li>
     
                 <li class="side-item">
-                    <a href="#">
+                    <a href="registrar_compra.php">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="item-description">
                             Compras
@@ -76,7 +77,7 @@ if (!isset($_SESSION['username'])) {
                 </li>
     
                 <li class="side-item">
-                    <a href="#">
+                    <a href="vender_produto.php">
                         <i class="fas fa-dollar-sign"></i>
                         <span class="item-description">
                             Vendas
@@ -85,13 +86,14 @@ if (!isset($_SESSION['username'])) {
                 </li>
     
                 <li class="side-item">
-                    <a href="#">
+                    <a href="registrar_perda.php">
                         <i class="fas fa-ban"></i>
                         <span class="item-description">
                             Perdas
                         </span>
                     </a>
                 </li>
+
             </ul>
     
             <button id="open_btn">
@@ -100,13 +102,12 @@ if (!isset($_SESSION['username'])) {
         </div>
 
         <div id="logout">
-            <button id="logout_btn">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span class="item-description">
-                    Logout
-                </span>
-            </button>
+    <a href="indexLogin.php" id="logout_btn" style="text-decoration: none;">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span class="item-description">Sair</span>
+    </a>
         </div>
+
     </nav>
 
     <main>
@@ -115,7 +116,7 @@ if (!isset($_SESSION['username'])) {
             <div class="card">
                 <h3>Registrar Produto</h3>
                 <p>Adicione novos produtos ao estoque.</p>
-                <a href="registro_produto.php">Ir para Registro</a>
+                <a href="registrar_produtos.php">Ir para Registro</a>
             </div>
 
             <div class="card">

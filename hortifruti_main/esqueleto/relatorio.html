@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas, Compras e Perdas</title>
+</head>
+<body>
+    <h1>Relatório de Vendas, Compras e Perdas</h1>
+    
+    <!-- Formulário para seleção de datas -->
+    <form action="../main/buscar_relatorio.php" method="POST">
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required><br><br>
+
+        <label for="data_fim">Data de Fim:</label>
+        <input type="date" id="data_fim" name="data_fim" required><br><br>
+
+        <input type="submit" value="Gerar Relatório">
+    </form>
+     
+</body>
+</html>
