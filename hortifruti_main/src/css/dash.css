@@ -1,0 +1,267 @@
+/* Estilo Geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #e3e9f7;
+    overflow-x: hidden; /* Evita a rolagem horizontal quando o sidebar está aberto */
+}
+
+/* Sidebar fixado à esquerda */
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    height: 100vh;
+    width: 82px; /* Largura padrão */
+    transition: all 0.5s;
+    border-radius: 0px 18px 18px 0px;
+    z-index: 2;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+#sidebar.open-sidebar {
+    width: 250px; /* Largura expandida */
+}
+
+/* Conteúdo do sidebar */
+#sidebar_content {
+    padding: 12px;
+}
+
+#user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#user_avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#user_infos {
+    display: flex;
+    flex-direction: column;
+}
+
+#user_infos span:last-child {
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+/* Itens do menu lateral */
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+}
+
+.side-item {
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+}
+
+.side-item.active {
+    background-color: #4f46e5;
+}
+
+.side-item:hover:not(.active),
+#logout_btn:hover {
+    background-color: #e3e9f7;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+}
+
+.side-item.active a {
+    color: #e3e9f7;
+}
+
+.side-item a i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* Logout */
+#logout {
+    border-top: 1px solid #e3e9f7;
+    padding: 12px;
+}
+
+#logout_btn {
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 8px;
+    text-align: start;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+/* Botão de expansão do sidebar */
+#open_btn {
+    position: absolute;
+    top: 30px;
+    right: -10px;
+    background-color: #4f46e5;
+    color: #e3e9f7;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#open_btn_icon {
+    transition: transform 0.3s ease;
+}
+
+.open-sidebar #open_btn_icon {
+    transform: rotate(180deg);
+}
+
+/* Descrição dos itens do sidebar */
+.item-description {
+    width: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: width 0.6s;
+    height: 0px;
+}
+
+#sidebar.open-sidebar .item-description {
+    width: 150px;
+    height: auto;
+}
+
+#sidebar.open-sidebar .side-item a {
+    justify-content: flex-start;
+    gap: 14px;
+}
+
+/* Conteúdo principal */
+#main-content {
+    margin-left: 82px; /* Espaço para o sidebar */
+    padding: 20px;
+    flex: 1; /* Ocupar o espaço restante */
+    transition: margin-left 0.5s;
+}
+
+#sidebar.open-sidebar + main#main-content {
+    margin-left: 250px; /* Ajuste para quando o sidebar está expandido */
+}
+
+/* Cards no conteúdo principal */
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.card a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Responsividade */
+/* Ajustes para o Sidebar em telas pequenas */
+@media (max-width: 700px) {
+    #sidebar {
+        width: 60px; /* Largura do sidebar menor em telas pequenas */
+    }
+
+    /* Ajuste quando o sidebar está aberto */
+    #sidebar.open-sidebar {
+        width: 100vw; /* Sidebar ocupa a tela inteira quando aberto */
+    }
+
+    /* Ajuste no conteúdo principal para acompanhar a mudança do sidebar */
+    #main-content {
+        margin-left: 60px; /* Ajuste para a largura do sidebar */
+    }
+
+    #sidebar.open-sidebar + main#main-content {
+        margin-left: 0; /* O conteúdo é alinhado com o início da tela */
+    }
+
+    /* Botão de abrir/fechar o sidebar */
+    #open_btn {
+        display: block;
+    }
+
+    /* Certifique-se de que o sidebar e o botão de abrir não fiquem sobrepondo o conteúdo */
+    #sidebar.open-sidebar + main#main-content {
+        transition: margin-left 0.3s ease;
+    }
+
+    /* Estilização do botão de abrir o sidebar para torná-lo visível */
+    #open_btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: #4f46e5;
+        color: #fff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+    }
+
+    #open_btn_icon {
+        transition: transform 0.3s ease;
+    }
+
+    /* Estilo para o ícone do botão */
+    .open-sidebar #open_btn_icon {
+        transform: rotate(180deg); /* Animação para indicar que o sidebar está aberto */
+    }
+}

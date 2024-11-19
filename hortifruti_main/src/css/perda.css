@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f2ff;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #003366;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.forme{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 500px; /* Reduzi o tamanho máximo do card */
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+h1 {
+    font-size: 20px; /* Reduzi o tamanho do título */
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    font-size: 14px; /* Tamanho da fonte reduzido */
+    padding-top: 10px;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 60%;
+    padding: 6px; /* Menor espaço interno */
+    margin-bottom: 10px; /* Menor espaçamento entre inputs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px; /* Tamanho da fonte reduzido */
+}
+
+/* Ajustes específicos para o botão */
+button {
+    padding: 13px; /* Botão menor */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    width: 48%; /* Define a largura do botão */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px; /* Tamanho da fonte do botão reduzido */
+
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.produto-lista {
+    width: 62%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #fff;
+}
+
+.produto-lista div {
+    padding: 6px; /* Diminuí o padding nos itens da lista */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px; /* Tamanho da fonte reduzido */
+}
+
+.produto-lista div:hover {
+    background-color: #f1f1f1;
+}
+
+.mensagem {
+    padding: 10px;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px; /* Tamanho da fonte reduzido */
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.total-perda {
+    padding: 12px; /* Menor padding na seção total perdido */
+    background-color: #f9f9f9;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 50%;
+    margin: auto;
+}
+
+.total-perda h3 {
+    font-size: 16px; /* Tamanho do título menor */
+    margin-bottom: 8px;
+}
+
+.total-perda p {
+    font-size: 16px; /* Fonte um pouco menor */
+    font-weight: bold;
+    color: #003366;
+}
+
+.back-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-button a {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px; /* Botão menor */
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px; /* Fonte do botão menor */
+}
+
+.back-button a:hover {
+    background-color: #218838;
+}

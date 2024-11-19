@@ -40,97 +40,55 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Produtos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-        form {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
-        }
-        label, input, button {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #333;
-            color: white;
-        }
-        td {
-            background-color: #f9f9f9;
-        }
-    </style>
+    <link rel="stylesheet" href="..\src\css\consult.css">
 </head>
 <body>
-    <header>
-        <h1>Consulta de Produtos</h1>
-        <nav>
-            <a href="dashboard.php" style="color: white;">Voltar ao Início</a>
-        </nav>
-    </header>
+    <div class="container">
+        <div class="card">
+            <header class="card-header">
+                <h1>Consulta de Produtos</h1>
+                <p>Encontre informações detalhadas sobre os produtos disponíveis.</p>
+            </header>
+            <form method="POST" action="" class="search-form">
+                <input 
+                    type="text" 
+                    name="search" 
+                    id="search" 
+                    placeholder="Digite o nome do produto..." 
+                    value="<?= htmlspecialchars($searchTerm) ?>" 
+                    class="search-input"
+                />
+                <button type="submit" class="search-btn">Buscar</button>
+            </form>
 
-    <section id="consulta">
-        <form method="POST" action="">
-            <label for="search">Buscar por nome do produto</label>
-            <input type="text" name="search" id="search" placeholder="Digite o nome do produto" value="<?= htmlspecialchars($searchTerm) ?>">
-            <button type="submit">Buscar</button>
-        </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Quantidade (kg)</th>
-                    <th>Preço (por kg)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($produtos) > 0): ?>
-                    <?php foreach ($produtos as $produto): ?>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td><?= htmlspecialchars($produto['nome']) ?></td>
-                            <td><?= htmlspecialchars($produto['quantidade']) ?></td>
-                            <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                            <th>Nome</th>
+                            <th>Quantidade (kg)</th>
+                            <th>Preço (por kg)</th>
                         </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="3">Nenhum produto encontrado.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </section>
+                    </thead>
+                    <tbody>
+                        <?php if (count($produtos) > 0): ?>
+                            <?php foreach ($produtos as $produto): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($produto['nome']) ?></td>
+                                    <td><?= htmlspecialchars($produto['quantidade']) ?></td>
+                                    <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3">Nenhum produto encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <a href="dashboard.php" class="back-btn">Voltar ao Início</a>
+        </div>
+    </div>
 </body>
 </html>

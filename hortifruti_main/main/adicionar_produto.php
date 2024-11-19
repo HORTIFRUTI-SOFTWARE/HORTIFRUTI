@@ -82,6 +82,8 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     <link rel="stylesheet" href="..\src\css\adc_qt.css">
 </head>
 <body>
+    
+
 <div class="form-container">
     <div class="form-card1">
         <div class="form-card2">

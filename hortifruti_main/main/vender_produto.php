@@ -8,6 +8,8 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+$message = ''; // Variável para armazenar mensagens de sucesso ou erro
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $COD_PRODUTO = intval($_POST['COD_PRODUTO']);
     $QUANTIDADE = floatval($_POST['QUANTIDADE']);
@@ -19,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $conn->prepare($query);
         $stmt->bind_param('iidd', $COD_PRODUTO, $QUANTIDADE, $PRECO, $PRECO_TOTAL);
         if ($stmt->execute()) {
-            echo "<p>Venda registrada com sucesso!</p>";
+            $message = "<p class='success'>Venda registrada com sucesso!</p>";
         } else {
-            echo "<p>Erro ao registrar venda: " . htmlspecialchars($conn->error) . "</p>";
+            $message = "<p class='error'>Erro ao registrar venda: " . htmlspecialchars($conn->error) . "</p>";
         }
     } else {
-        echo "<p>Erro: Quantidade e preço devem ser maiores que zero.</p>";
+        $message = "<p class='error'>Erro: Quantidade e preço devem ser maiores que zero.</p>";
     }
 }
 
@@ -47,46 +49,51 @@ $PRECO_TOTAL = $result_PRECO_TOTAL ? $result_PRECO_TOTAL->fetch_assoc()['PRECO_T
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Venda</title>
+    <title>Registro de Vendas - Interface Premium</title>
+    <link rel="stylesheet" href="..\src\css\venda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>Registrar Venda de Produto</h1>
-        <nav>
-            <ul>
-                <li><a href="dashboard.php">Voltar ao Ínicio</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-cash-register"></i> Registro de Vendas</h1>
+            <nav>
+                <a href="dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar ao Início</a>
+            </nav>
+        </header>
 
-    <section id="formulario">
-        <form method="POST" action="">
-            <label for="COD_PRODUTO">Produto</label>
-            <select name="COD_PRODUTO" required>
-                <?php if ($result_produto->num_rows > 0) {
-                    while ($row = $result_produto->fetch_assoc()) { ?>
-                        <option value="<?php echo htmlspecialchars($row['COD_PRODUTO']); ?>">
-                            <?php echo htmlspecialchars($row['NOME']); // Alterar 'nome' para a coluna correta, como 'descricao' ?>
-                        </option>
-                <?php }
-                } else { ?>
-                    <option value="">Nenhum produto encontrado</option>
-                <?php } ?>
-            </select><br>
+        <section id="formulario" class="card">
+            <div class="message-container"><?php echo $message; ?></div>
+            <form method="POST" action="" class="form">
+                <div class="input-group">
+                    <label for="COD_PRODUTO">Produto</label>
+                    <select name="COD_PRODUTO" required>
+                        <?php while ($row = $result_produto->fetch_assoc()) { ?>
+                            <option value="<?php echo htmlspecialchars($row['COD_PRODUTO']); ?>">
+                                <?php echo htmlspecialchars($row['NOME']); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
 
-            <label for="quantidade">Quantidade (kg)</label>
-            <input type="number" name="QUANTIDADE" step="0.01" required><br>
+                <div class="input-group">
+                    <label for="quantidade">Quantidade (kg)</label>
+                    <input type="number" name="QUANTIDADE" step="0.01" placeholder="Ex: 2.5" required>
+                </div>
 
-            <label for="preco">Preço Unitário (por kg)</label>
-            <input type="number" name="PRECO" step="0.01" required><br>
+                <div class="input-group">
+                    <label for="preco">Preço Unitário (por kg)</label>
+                    <input type="number" name="PRECO" step="0.01" placeholder="Ex: 20.00" required>
+                </div>
 
-            <button type="submit">Registrar Venda</button>
-        </form>
-    </section>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Registrar Venda</button>
+            </form>
+        </section>
 
-    <section id="PRECO_TOTAL">
-        <h2>Total de Vendas Registradas</h2>
-        <p>Valor total de todas as vendas: R$ <?php echo number_format($PRECO_TOTAL, 2, ',', '.'); ?></p>
-    </section>
+        <section id="PRECO_TOTAL" class="card summary">
+            <h2><i class="fas fa-chart-line"></i> Total de Vendas</h2>
+            <p>Valor total de todas as vendas: <strong>R$ <?php echo number_format($PRECO_TOTAL, 2, ',', '.'); ?></strong></p>
+        </section>
+    </div>
 </body>
 </html>

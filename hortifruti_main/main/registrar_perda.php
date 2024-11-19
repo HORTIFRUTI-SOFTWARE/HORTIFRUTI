@@ -4,6 +4,7 @@ include('config.php'); // Conexão com o banco de dados
 
 // Variáveis de mensagem
 $mensagem = "";
+$VALOR_TOTAL = 0; // Inicializa a variável
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['username'])) {
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $produtos = [];
 if (isset($_GET['query']) && !empty($_GET['query'])) {
     $searchQuery = '%' . $_GET['query'] . '%';
-    $stmtSearch = $conn->prepare("SELECT COD_PRODUTO, nome FROM produto WHERE nome LIKE ?");
+    $stmtSearch = $conn->prepare("SELECT COD_PRODUTO, nome, preco FROM produto WHERE nome LIKE ?");
     $stmtSearch->bind_param('s', $searchQuery);
     $stmtSearch->execute();
     $resultSearch = $stmtSearch->get_result();
@@ -70,7 +71,6 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     }
     $stmtSearch->close();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -79,84 +79,52 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar PERCA</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-        form {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
-        }
-        label, input, select, button {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .produto-lista {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            margin-top: 10px;
-        }
-        .produto-lista div {
-            padding: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="..\src\css\perda.css">
 </head>
 <body>
+
     <header>
-        <h1>Registrar PERCA</h1>
-        <nav>
-            <a href="dashboard.php" style="color: white;">Voltar ao Início</a>
-        </nav>
+        <h1><i class="fas fa-box-open"></i> Registrar Perda de Produto</h1>
     </header>
 
-    <section id="formulario">
-    <form method="POST" action="">
-        <label for="produto">Pesquisar Produto</label>
-        <input type="text" id="produto" name="produto" onkeyup="buscarProduto()" placeholder="Pesquise pelo nome do produto...">
+    <div class="container">
+        <form class="forme" method="POST" action="">
+            <label for="produto">Pesquisar Produto</label>
+            <input type="text" id="produto" name="produto" onkeyup="buscarProduto()" placeholder="Pesquise pelo nome do produto..." required>
 
-        <div id="produto-lista" class="produto-lista">
-            <?php foreach ($produtos as $produto): ?>
-                <div onclick="selecionarProduto(<?= $produto['COD_PRODUTO'] ?>, '<?= addslashes($produto['nome']) ?>')">
-                    <?= $produto['nome'] ?>
-                </div>
-            <?php endforeach; ?>
+            <div id="produto-lista" class="produto-lista">
+                <?php foreach ($produtos as $produto): ?>
+                    <div onclick="selecionarProduto(<?= $produto['COD_PRODUTO'] ?>, '<?= addslashes($produto['nome']) ?>', <?= $produto['preco'] ?>)">
+                        <?= $produto['nome'] ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <input type="hidden" id="id_produto" name="COD_PRODUTO">
+            <input type="hidden" id="preco_produto" value="0">
+
+            <label for="quantidade_perdida">Quantidade Perdida (kg)</label>
+            <input type="number" name="QUANTIDADE" id="quantidade_perdida" step="0.01" placeholder="Digite a quantidade perdida..." required oninput="calcularTotal()">
+
+            <button type="submit"><i class="fas fa-save"></i> Registrar PERCA</button>
+        </form>
+
+        <?php if ($mensagem): ?>
+            <div class="mensagem <?= strpos($mensagem, 'sucesso') !== false ? 'success' : 'error' ?>">
+                <?= $mensagem ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="total-perda">
+            <h3>Total Perdido</h3>
+            <p id="total-perdido">R$ 0,00</p>
         </div>
 
-        <input type="hidden" id="id_produto" name="COD_PRODUTO">
-
-        <label for="quantidade_perdida">Quantidade Perdida (kg)</label>
-        <input type="number" name="QUANTIDADE" id="quantidade_perdida" step="0.01" required>
-
-        <button type="submit">Registrar PERCA</button>
-    </form>
-
-    <p style="text-align: center; color: <?= strpos($mensagem, 'sucesso') !== false ? 'green' : 'red' ?>;">
-        <?= $mensagem ?>
-    </p>
-</section>
+        <div class="back-button">
+            <a href="dashboard.php"><i class="fas fa-home"></i> Voltar à Página Inicial</a>
+        </div>
+    </div>
 
     <script>
         function buscarProduto() {
@@ -166,11 +134,24 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             }
         }
 
-        function selecionarProduto(id, nome) {
-        document.getElementById("produto").value = nome;
-        document.getElementById("id_produto").value = id;
-        document.getElementById("produto-lista").innerHTML = '';  // Limpar a lista de sugestões
+        function selecionarProduto(id, nome, preco) {
+            document.getElementById("produto").value = nome;
+            document.getElementById("id_produto").value = id;
+            document.getElementById("preco_produto").value = preco;
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            var quantidade = parseFloat(document.getElementById("quantidade_perdida").value);
+            var preco = parseFloat(document.getElementById("preco_produto").value);
+            if (!isNaN(quantidade) && !isNaN(preco)) {
+                var total = quantidade * preco;
+                document.getElementById("total-perdido").textContent = 'R$ ' + total.toFixed(2);
+            } else {
+                document.getElementById("total-perdido").textContent = 'R$ 0,00';
+            }
         }
     </script>
+
 </body>
 </html>
