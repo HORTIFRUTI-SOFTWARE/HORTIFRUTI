@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo = $_POST['TIPO'];
     $valor = $_POST['VALOR'];
     $nome = $_POST['NOME'];
-    $numero_nota_fiscal = $_POST['NUMERO_NOTA_FISCAL'];
     $data_compra = $_POST['DATA_COMPRA'];
     $preco_total = $_POST['PRECO_TOTAL'];
     $preco_compra = $_POST['PRECO_COMPRA'];
@@ -34,15 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<p style='color:red;'>O valor deve ser maior que zero!</p>";
     } else {
         // Inserir os dados no banco de dados
-        $sql = "INSERT INTO compra (QUANTIDADE, NOME, NUMERO_NOTA_FISCAL, DATA_COMPRA, PRECO_TOTAL, KG, PRECO_COMPRA, PRECO_VENDA) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO compra (QUANTIDADE, NOME, DATA_COMPRA, PRECO_TOTAL, KG, PRECO_COMPRA, PRECO_VENDA) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         if ($stmt = $mysqli->prepare($sql)) {
             $stmt->bind_param(
                 "issddddd",
                 $quantidade,
                 $nome,
-                $numero_nota_fiscal,
                 $data_compra,
                 $preco_total,
                 $kg,
@@ -73,6 +71,8 @@ $mysqli->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Compra</title>
     <link rel="stylesheet" href="..\SRC\CSS\compra.css">
+    <!-- Link para o Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         // Função para habilitar ou desabilitar o campo "valor" conforme o tipo selecionado
         function toggleFields() {
@@ -112,10 +112,15 @@ $mysqli->close();
     <div class="container">
         <div class="card">
             <header class="card-header">
-                <h1>Registro de Compra</h1>
+                <h1><i class="fas fa-shopping-cart"></i> Registro de Compra</h1>
                 <p>Preencha os campos abaixo para registrar uma nova compra.</p>
             </header>
             <form action="" method="POST">
+            <div class="input-group">
+                    <label for="nome">Nome do Produto:</label>
+                    <input type="text" id="nome" name="NOME" required>
+                </div>
+
                 <div class="input-group">
                     <label for="tipo">Selecione o Tipo:</label>
                     <select id="tipo" name="TIPO" onchange="toggleFields()" required>
@@ -128,16 +133,6 @@ $mysqli->close();
                 <div class="input-group">
                     <label for="valor">Valor:</label>
                     <input type="number" step="0.01" id="valor" name="VALOR" placeholder="Escolha o tipo primeiro" disabled required>
-                </div>
-
-                <div class="input-group">
-                    <label for="nome">Nome do Produto:</label>
-                    <input type="text" id="nome" name="NOME" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="numero_nota_fiscal">Número Nota Fiscal:</label>
-                    <input type="text" id="numero_nota_fiscal" name="NUMERO_NOTA_FISCAL" required>
                 </div>
 
                 <div class="input-group">
@@ -160,9 +155,9 @@ $mysqli->close();
                     <input type="number" step="0.01" id="preco_venda" name="PRECO_VENDA" required>
                 </div>
 
-                <button type="submit">Registrar Compra</button>
+                <button type="submit"><i class="fas fa-save"></i> Registrar Compra</button>
             </form>
-            <a href="dashboard.php" class="back-btn">Voltar ao Início</a>
+            <a href="dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar ao Início</a>
         </div>
     </div>
 </body>

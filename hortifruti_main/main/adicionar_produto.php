@@ -80,17 +80,19 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incluir Quantidade</title>
     <link rel="stylesheet" href="..\src\css\adc_qt.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    
-
 <div class="form-container">
     <div class="form-card1">
         <div class="form-card2">
             <form method="POST" action="" class="form">
-                <p class="form-heading">Incluir Quantidade</p>
+                <p class="form-heading"><i class="fas fa-box"></i> Incluir Quantidade</p>
 
+                <!-- Campo de pesquisa -->
                 <div class="form-field">
+                    <label for="produto" class="sr-only">Produto:</label>
+                    <i class="fas fa-search"></i>
                     <input 
                         type="text" 
                         id="produto" 
@@ -101,19 +103,23 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                     />
                 </div>
 
+                <!-- Lista de produtos sugeridos -->
                 <div id="produto-lista" class="produto-lista">
                     <?php foreach ($produtos as $produto): ?>
                         <div 
                             onclick="selecionarProduto(<?= $produto['COD_PRODUTO'] ?>, '<?= addslashes($produto['nome']) ?>')"
                         >
-                            <?= $produto['nome'] ?>
+                            <i class="fas fa-box-open"></i> <?= $produto['nome'] ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
 
                 <input type="hidden" id="id_produto" name="COD_PRODUTO">
 
+                <!-- Campo de quantidade -->
                 <div class="form-field">
+                    <label for="quantidade_perdida" class="sr-only">Quantidade:</label>
+                    <i class="fas fa-weight-hanging"></i>
                     <input 
                         type="number" 
                         name="QUANTIDADE" 
@@ -125,17 +131,20 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                     />
                 </div>
 
-                <button type="submit" class="sendMessage-btn">Registrar Inclusão</button>
-                <a class="voltar_btn" href="dashboard.php" id="logout_btn" style="text-decoration: none;">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span class="item-description">Voltar</span>
-    </a>
+                <!-- Botão de registro -->
+                <button type="submit" class="sendMessage-btn">
+                    <i class="fas fa-plus"></i> Registrar Inclusão
+                </button>
+
+                <!-- Botão de voltar -->
+                <a class="voltar_btn" href="dashboard.php">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
             </form>
 
-
-            <p class="message <?= strpos($mensagem, 'sucesso') !== false ? 'success' : (strpos($mensagem, 'Erro') !== false ? 'error' : '') ?>">
+            <!-- Mensagem de feedback -->
+             <p class="message <?= strpos($mensagem, 'sucesso') !== false ? 'success' : (strpos($mensagem, 'Erro') !== false ? 'error' : '') ?>">
                 <?= $mensagem ?>
-            </p>
         </div>
     </div>
 </div>

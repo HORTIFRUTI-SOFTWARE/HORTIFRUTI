@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #6c63ff, #dfe9f3);
+    background: linear-gradient(135deg, #4f46e5, #dfe9f3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,61 +67,69 @@ form {
 .input-group label {
     font-weight: bold;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
-.input-group input,
+.input-group input, 
 .input-group select {
     padding: 10px;
-    margin-top: 5px;
+    border: 2px solid #ddd;
     border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 0.95em; /* Tamanho de fonte um pouco menor */
-    width: 100%; /* Garantir que os campos ocupem toda a largura disponível */
-    box-sizing: border-box;
-    transition: border-color 0.3s;
+    font-size: 1em;
 }
 
-.input-group input:focus,
+.input-group input:focus, 
 .input-group select:focus {
+    outline: none;
     border-color: #4f46e5;
+    box-shadow: 0px 0px 5px rgba(79, 70, 229, 0.5);
 }
 
 /* Botão de envio */
 button {
     background-color: #4f46e5;
     color: white;
-    padding: 12px;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
-    font-size: 1.1em;
+    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%; /* Tornar o botão responsivo */
-    max-width: 400px; /* Limitar a largura máxima do botão */
-    margin-top: 15px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #3a3ab4;
+    background-color: #4338ca;
 }
 
-/* Estilo do link de voltar */
+/* Estilo do botão de voltar */
 .back-btn {
     display: inline-block;
-    margin-top: 15px;
-    background-color: #5753c9;
-    padding: 8px 16px; /* Tornado o botão menor */
-    border-radius: 8px;
-    color: white;
+    margin-top: 20px;
+    color: #4f46e5;
+    font-size: 1em;
     text-decoration: none;
-    text-align: center;
-    width: auto; /* Ajuste automático para o conteúdo do botão */
-    max-width: 200px; /* Limitar a largura do botão */
-    margin-left: auto;
-    margin-right: auto;
+    border: 1px solid #4f46e5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s;
 }
 
 .back-btn:hover {
-    background-color: #3e3aa1;
+    background-color: #4f46e5;
+    color: white;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+    }
+
+    .input-group {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
 }

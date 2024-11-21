@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $conn->prepare($query);
         $stmt->bind_param('iidd', $COD_PRODUTO, $QUANTIDADE, $PRECO, $PRECO_TOTAL);
         if ($stmt->execute()) {
-            $message = "<p class='success'>Venda registrada com sucesso!</p>";
+            $message = "<p class='success'><i class='fas fa-check-circle'></i> Venda registrada com sucesso!</p>";
         } else {
-            $message = "<p class='error'>Erro ao registrar venda: " . htmlspecialchars($conn->error) . "</p>";
+            $message = "<p class='error'><i class='fas fa-exclamation-circle'></i> Erro ao registrar venda: " . htmlspecialchars($conn->error) . "</p>";
         }
     } else {
-        $message = "<p class='error'>Erro: Quantidade e preço devem ser maiores que zero.</p>";
+        $message = "<p class='error'><i class='fas fa-exclamation-triangle'></i> Erro: Quantidade e preço devem ser maiores que zero.</p>";
     }
 }
 
@@ -43,13 +43,12 @@ $query_PRECO_TOTAL = "SELECT SUM(PRECO_TOTAL) AS PRECO_TOTAL FROM venda";
 $result_PRECO_TOTAL = $conn->query($query_PRECO_TOTAL);
 $PRECO_TOTAL = $result_PRECO_TOTAL ? $result_PRECO_TOTAL->fetch_assoc()['PRECO_TOTAL'] : 0;
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Vendas - Interface Premium</title>
+    <title>Registro de Vendas</title>
     <link rel="stylesheet" href="..\src\css\venda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -66,7 +65,7 @@ $PRECO_TOTAL = $result_PRECO_TOTAL ? $result_PRECO_TOTAL->fetch_assoc()['PRECO_T
             <div class="message-container"><?php echo $message; ?></div>
             <form method="POST" action="" class="form">
                 <div class="input-group">
-                    <label for="COD_PRODUTO">Produto</label>
+                    <label for="COD_PRODUTO"><i class="fas fa-box"></i> Produto</label>
                     <select name="COD_PRODUTO" required>
                         <?php while ($row = $result_produto->fetch_assoc()) { ?>
                             <option value="<?php echo htmlspecialchars($row['COD_PRODUTO']); ?>">
@@ -77,12 +76,12 @@ $PRECO_TOTAL = $result_PRECO_TOTAL ? $result_PRECO_TOTAL->fetch_assoc()['PRECO_T
                 </div>
 
                 <div class="input-group">
-                    <label for="quantidade">Quantidade (kg)</label>
+                    <label for="quantidade"><i class="fas fa-weight"></i> Quantidade (kg)</label>
                     <input type="number" name="QUANTIDADE" step="0.01" placeholder="Ex: 2.5" required>
                 </div>
 
                 <div class="input-group">
-                    <label for="preco">Preço Unitário (por kg)</label>
+                    <label for="preco"><i class="fas fa-dollar-sign"></i> Preço Unitário (por kg)</label>
                     <input type="number" name="PRECO" step="0.01" placeholder="Ex: 20.00" required>
                 </div>
 

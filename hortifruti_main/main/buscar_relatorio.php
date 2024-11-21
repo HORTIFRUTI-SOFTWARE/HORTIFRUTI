@@ -1,86 +1,91 @@
 <?php
-    // Verificar se o formulário foi enviado
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $data_inicio = $_POST['data_inicio'];
-        $data_fim = $_POST['data_fim'];
-        
-        // Conectar ao banco de dados
-        $mysqli = new mysqli("localhost", "root", "", "hortfrut");
-        
-        if ($mysqli->connect_error) {
-            die("Erro na conexão com o banco de dados: " . $mysqli->connect_error);
-        }
+session_start();
+include('config.php'); // Conexão com o banco de dados
 
-        // Consultar as vendas no período
-        $vendas_query = "SELECT SUM(valor_venda) AS total_vendas FROM vendas WHERE data_venda BETWEEN ? AND ?";
-        $stmt = $mysqli->prepare($vendas_query);
-        $stmt->bind_param("ss", $data_inicio, $data_fim);
-        $stmt->execute();
-        $stmt->bind_result($total_vendas);
-        $stmt->fetch();
-        $stmt->close();
-        
-        // Consultar as compras no período
-        $compras_query = "SELECT SUM(valor_compra) AS total_compras FROM compras WHERE data_compra BETWEEN ? AND ?";
-        $stmt = $mysqli->prepare($compras_query);
-        $stmt->bind_param("ss", $data_inicio, $data_fim);
-        $stmt->execute();
-        $stmt->bind_result($total_compras);
-        $stmt->fetch();
-        $stmt->close();
-        
-        // Consultar as perdas no período
-        $percas_query = "SELECT SUM(valor_perca) AS total_percas FROM percas WHERE data_perca BETWEEN ? AND ?";
-        $stmt = $mysqli->prepare($percas_query);
-        $stmt->bind_param("ss", $data_inicio, $data_fim);
-        $stmt->execute();
-        $stmt->bind_result($total_percas);
-        $stmt->fetch();
-        $stmt->close();
-        
-        // Exibir os resultados
-        echo "<h2>Relatório de " . date('d/m/Y', strtotime($data_inicio)) . " até " . date('d/m/Y', strtotime($data_fim)) . "</h2>";
-        echo "<p><strong>Total de Vendas: </strong>R$ " . number_format($total_vendas, 2, ',', '.') . "</p>";
-        echo "<p><strong>Total de Compras: </strong>R$ " . number_format($total_compras, 2, ',', '.') . "</p>";
-        echo "<p><strong>Total de Perdas: </strong>R$ " . number_format($total_percas, 2, ',', '.') . "</p>";
+// Verificar se o usuário está logado
+if (!isset($_SESSION['username'])) {
+    header("Location: indexLogin.php"); // Redireciona para login se não estiver logado
+    exit();
+}
 
-        // Fechar a conexão com o banco de dados
-        $mysqli->close();
-    }
-    ?>
+// Variável para armazenar o termo de pesquisa (caso exista)
+$searchTerm = isset($_POST['search']) ? trim($_POST['search']) : '';
+
+// Preparar a consulta para buscar os produtos
+if (!empty($searchTerm)) {
+    $query = "SELECT nome, quantidade, preco FROM produto WHERE nome LIKE ?";
+    $stmt = $conn->prepare($query);
+    $searchTerm = "%" . $searchTerm . "%"; // Adiciona o '%' para o LIKE funcionar
+    $stmt->bind_param('s', $searchTerm);
+} else {
+    $query = "SELECT nome, quantidade, preco FROM produto";
+    $stmt = $conn->prepare($query);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+$produtos = [];
+if ($result->num_rows > 0) {
+    $produtos = $result->fetch_all(MYSQLI_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Vendas, Compras e Perdas</title>
-    <link rel="stylesheet" href="..\src\css\relat.css">
+    <title>Consulta de Produtos</title>
+    <link rel="stylesheet" href="../src/css/consult.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Relatório de Vendas, Compras e Perdas</h1>
+        <div class="card">
+            <header class="card-header">
+                <h1><i class="fa-solid fa-boxes"></i> Consulta de Produtos</h1>
+                <p>Encontre informações detalhadas sobre os produtos disponíveis.</p>
+            </header>
+            <form method="POST" action="" class="search-form">
+                <input 
+                    type="text" 
+                    name="search" 
+                    id="search" 
+                    placeholder="Digite o nome do produto..." 
+                    value="<?= htmlspecialchars($searchTerm) ?>" 
+                    class="search-input"
+                />
+                <button type="submit" class="search-btn"><i class="fa-solid fa-search"></i> Buscar</button>
+            </form>
 
-        <!-- Formulário para seleção de datas -->
-        <form action="../main/buscar_relatorio.php" method="POST">
-            <label for="data_inicio">Data de Início:</label>
-            <input type="date" id="data_inicio" name="data_inicio" required>
-
-            <label for="data_fim">Data de Fim:</label>
-            <input type="date" id="data_fim" name="data_fim" required>
-
-            <input type="submit" value="Gerar Relatório">
-        </form>
-        <a href="dashboard.php" class="btn-voltar">Voltar ao Início</a>
-        <!-- Exibição dos resultados (adicionada uma seção de resultado estilizada) -->
-        <div class="resultado">
-            <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    echo "<h2>Relatório de " . date('d/m/Y', strtotime($data_inicio)) . " até " . date('d/m/Y', strtotime($data_fim)) . "</h2>";
-                    echo "<p><strong>Total de Vendas: </strong>R$ " . number_format($total_vendas, 2, ',', '.') . "</p>";
-                    echo "<p><strong>Total de Compras: </strong>R$ " . number_format($total_compras, 2, ',', '.') . "</p>";
-                    echo "<p><strong>Total de Perdas: </strong>R$ " . number_format($total_percas, 2, ',', '.') . "</p>";
-                }
-            ?>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantidade (kg)</th>
+                            <th>Preço (por kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (count($produtos) > 0): ?>
+                            <?php foreach ($produtos as $produto): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($produto['nome']) ?></td>
+                                    <td><?= htmlspecialchars($produto['quantidade']) ?></td>
+                                    <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3">Nenhum produto encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <a href="dashboard.php" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
         </div>
     </div>
 </body>

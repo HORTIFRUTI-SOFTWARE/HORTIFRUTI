@@ -13,13 +13,11 @@ $searchTerm = isset($_POST['search']) ? trim($_POST['search']) : '';
 
 // Preparar a consulta para buscar os produtos
 if (!empty($searchTerm)) {
-    // Caso haja termo de pesquisa, filtra os produtos pelo nome
     $query = "SELECT nome, quantidade, preco FROM produto WHERE nome LIKE ?";
     $stmt = $conn->prepare($query);
     $searchTerm = "%" . $searchTerm . "%"; // Adiciona o '%' para o LIKE funcionar
     $stmt->bind_param('s', $searchTerm);
 } else {
-    // Caso não haja pesquisa, retorna todos os produtos
     $query = "SELECT nome, quantidade, preco FROM produto";
     $stmt = $conn->prepare($query);
 }
@@ -27,7 +25,6 @@ if (!empty($searchTerm)) {
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Armazenar os resultados
 $produtos = [];
 if ($result->num_rows > 0) {
     $produtos = $result->fetch_all(MYSQLI_ASSOC);
@@ -40,13 +37,14 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Produtos</title>
-    <link rel="stylesheet" href="..\src\css\consult.css">
+    <link rel="stylesheet" href="../src/css/consult.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <div class="card">
             <header class="card-header">
-                <h1>Consulta de Produtos</h1>
+                <h1><i class="fa-solid fa-boxes"></i> Consulta de Produtos</h1>
                 <p>Encontre informações detalhadas sobre os produtos disponíveis.</p>
             </header>
             <form method="POST" action="" class="search-form">
@@ -58,7 +56,7 @@ if ($result->num_rows > 0) {
                     value="<?= htmlspecialchars($searchTerm) ?>" 
                     class="search-input"
                 />
-                <button type="submit" class="search-btn">Buscar</button>
+                <button type="submit" class="search-btn"><i class="fa-solid fa-search"></i> Buscar</button>
             </form>
 
             <div class="table-container">
@@ -87,7 +85,7 @@ if ($result->num_rows > 0) {
                     </tbody>
                 </table>
             </div>
-            <a href="dashboard.php" class="back-btn">Voltar ao Início</a>
+            <a href="dashboard.php" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
         </div>
     </div>
 </body>

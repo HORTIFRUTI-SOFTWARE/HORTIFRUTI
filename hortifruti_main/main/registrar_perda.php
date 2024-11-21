@@ -1,26 +1,22 @@
 <?php
 session_start();
-include('config.php'); // Conexão com o banco de dados
+include('config.php');
 
 // Variáveis de mensagem
 $mensagem = "";
-$VALOR_TOTAL = 0; // Inicializa a variável
+$VALOR_TOTAL = 0;
 
-// Verificar se o usuário está logado
 if (!isset($_SESSION['username'])) {
     header("Location: indexLogin.php");
     exit();
 }
 
-// Processar o formulário
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['COD_PRODUTO']) && isset($_POST['QUANTIDADE'])) {
-        $id_produto = $_POST['COD_PRODUTO'];           // ID do produto
-        $quantidade_perdida = floatval($_POST['QUANTIDADE']); // Quantidade perdida
+        $id_produto = $_POST['COD_PRODUTO'];
+        $quantidade_perdida = floatval($_POST['QUANTIDADE']);
 
-        // Verificar se os dados são válidos
         if ($quantidade_perdida > 0) {
-            // Buscar o preço do produto selecionado
             $queryProduto = "SELECT preco, nome FROM produto WHERE COD_PRODUTO = ?";
             $stmtProduto = $conn->prepare($queryProduto);
             $stmtProduto->bind_param('i', $id_produto);
@@ -29,26 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtProduto->fetch();
             $stmtProduto->close();
 
-            // Calcular o valor da PERCA
             $VALOR_TOTAL = $quantidade_perdida * $preco;
 
-            // Registrar a PERCA na tabela de PERCA
-            $query = "INSERT INTO PERCA (COD_PRODUTO, QUANTIDADE, VALOR_TOTAL, DATA_PERCA) 
-                      VALUES (?, ?, ?, NOW())";
+            $query = "INSERT INTO PERCA (COD_PRODUTO, QUANTIDADE, VALOR_TOTAL, DATA_PERCA) VALUES (?, ?, ?, NOW())";
             $stmt = $conn->prepare($query);
             $stmt->bind_param('idd', $id_produto, $quantidade_perdida, $VALOR_TOTAL);
+
             if ($stmt->execute()) {
-                // Atualizar o estoque
                 $updateQuery = "UPDATE produto SET quantidade = quantidade - ? WHERE COD_PRODUTO = ?";
                 $updateStmt = $conn->prepare($updateQuery);
                 $updateStmt->bind_param('di', $quantidade_perdida, $id_produto);
-                if ($updateStmt->execute()) {
-                    $mensagem = "PERCA registrada com sucesso!";
-                } else {
-                    $mensagem = "Erro ao atualizar o estoque: " . $conn->error;
-                }
+                $updateStmt->execute();
+                $mensagem = "Perda registrada com sucesso!";
             } else {
-                $mensagem = "Erro ao registrar a PERCA: " . $conn->error;
+                $mensagem = "Erro ao registrar a perda: " . $conn->error;
             }
         } else {
             $mensagem = "Por favor, preencha a quantidade perdida corretamente.";
@@ -58,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Pesquisa de produtos
 $produtos = [];
 if (isset($_GET['query']) && !empty($_GET['query'])) {
     $searchQuery = '%' . $_GET['query'] . '%';
@@ -78,51 +67,46 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar PERCA</title>
+    <title>Registrar Perda</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="..\src\css\perda.css">
 </head>
 <body>
-
     <header>
-        <h1><i class="fas fa-box-open"></i> Registrar Perda de Produto</h1>
+        <h1>Registrar Perda</h1>
     </header>
-
     <div class="container">
-        <form class="forme" method="POST" action="">
-            <label for="produto">Pesquisar Produto</label>
-            <input type="text" id="produto" name="produto" onkeyup="buscarProduto()" placeholder="Pesquise pelo nome do produto..." required>
-
-            <div id="produto-lista" class="produto-lista">
+        <form method="POST" action="">
+            <label for="produto">
+                <i class="fas fa-search"></i> Pesquisar Produto
+            </label>
+            <input type="text" id="produto" name="produto" placeholder="Nome do produto..." onkeyup="buscarProduto()" required>
+            <div class="sla" id="produto-lista">
                 <?php foreach ($produtos as $produto): ?>
-                    <div onclick="selecionarProduto(<?= $produto['COD_PRODUTO'] ?>, '<?= addslashes($produto['nome']) ?>', <?= $produto['preco'] ?>)">
+                    <div class="sla" onclick="selecionarProduto(<?= $produto['COD_PRODUTO'] ?>, '<?= addslashes($produto['nome']) ?>', <?= $produto['preco'] ?>)">
                         <?= $produto['nome'] ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-
             <input type="hidden" id="id_produto" name="COD_PRODUTO">
-            <input type="hidden" id="preco_produto" value="0">
-
+            <input type="hidden" id="preco_produto">
             <label for="quantidade_perdida">Quantidade Perdida (kg)</label>
-            <input type="number" name="QUANTIDADE" id="quantidade_perdida" step="0.01" placeholder="Digite a quantidade perdida..." required oninput="calcularTotal()">
-
-            <button type="submit"><i class="fas fa-save"></i> Registrar PERCA</button>
+            <input type="number" id="quantidade_perdida" name="QUANTIDADE" step="0.01" required oninput="calcularTotal()">
+            <button type="submit">
+                <i class="fas fa-check"></i> Registrar
+            </button>
         </form>
-
         <?php if ($mensagem): ?>
-            <div class="mensagem <?= strpos($mensagem, 'sucesso') !== false ? 'success' : 'error' ?>">
-                <?= $mensagem ?>
-            </div>
+            <div class="mensagem"><?= $mensagem ?></div>
         <?php endif; ?>
-
         <div class="total-perda">
             <h3>Total Perdido</h3>
             <p id="total-perdido">R$ 0,00</p>
         </div>
-
         <div class="back-button">
-            <a href="dashboard.php"><i class="fas fa-home"></i> Voltar à Página Inicial</a>
+            <a href="dashboard.php">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
         </div>
     </div>
 
@@ -152,6 +136,5 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             }
         }
     </script>
-
 </body>
 </html>

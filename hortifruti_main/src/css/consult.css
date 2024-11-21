@@ -1,4 +1,4 @@
-/* Estilo geral */
+/* Estilo Geral */
 body {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 900px; /* Ajustado para maior flexibilidade */
+    max-width: 900px;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -22,146 +22,112 @@ body {
 .card {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    width: 100%;
     text-align: center;
-    width: 100%; /* Tornar o card flexível */
-    max-width: 700px; /* Ajustado para limitar a largura do card */
-}
-
-/* Cabeçalho do card */
-.card-header {
-    margin-bottom: 20px;
 }
 
 .card-header h1 {
     color: #4f46e5;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center; /* Centraliza o título */
     font-size: 1.8em;
-    font-weight: bold;
-    margin-bottom: 0.5em;
 }
 
 .card-header p {
-    font-size: 1em;
     color: #555;
 }
 
-/* Formulário de pesquisa */
+/* Formulário de Pesquisa */
 .search-form {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
 .search-input {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 1em;
 }
 
 .search-btn {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
-    background-color: #6c63ff;
-    color: white;
+    background: #4f46e5;
+    color: #fff;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .search-btn:hover {
-    background-color: #5753c9;
+    background: #3b3ab8;
 }
 
-/* Tabela com scroll */
+/* Tabela */
 .table-container {
-    max-height: 350px; /* Altura ajustada para a tabela */
+    max-height: 400px;
     overflow-y: auto;
-    margin: 20px 0;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto; /* Adiciona rolagem horizontal */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 500px; /* Ajustado para a largura mínima da tabela */
+    min-width: 600px;
 }
 
 .table th {
-    background-color: #4f46e5;
+    background: #4f46e5;
     color: white;
-    font-weight: bold;
     text-align: center;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    padding: 12px;
 }
 
 .table td {
-    padding: 10px;
     text-align: center;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 .table tr:nth-child(even) {
-    background-color: #f1f1f1;
+    background: #f9f9f9;
 }
 
-/* Botão "Voltar ao Início" */
+/* Botão de Retorno */
 .back-btn {
-    display: block;
-    margin: 20px auto 0; /* Centraliza horizontalmente */
+    margin-top: 20px;
+    display: inline-block;
     padding: 10px 20px;
-    border-radius: 8px;
-    width: 25%;
-    background-color: #6c63ff;
+    background: #4f46e5;
     color: white;
     text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    text-align: center;
+    border-radius: 8px;
 }
 
 .back-btn:hover {
-    background-color: #5753c9;
+    background: #3b3ab8;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    .card {
-        width: 100%;
-        max-width: none;
-        padding: 15px;
-    }
-
     .search-form {
         flex-direction: column;
         align-items: stretch;
     }
-
-    .search-input, .search-btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .table-container {
-        max-height: 250px; /* Menor altura para a tabela em telas menores */
-    }
-
     .table {
-        min-width: 100%; /* Tabela se ajustando à largura da tela */
+        min-width: 100%;
     }
 }

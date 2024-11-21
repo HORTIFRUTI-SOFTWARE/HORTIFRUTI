@@ -3,13 +3,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #6c63ff, #dfe9f3); 
+    background: #e3e9f7; /* Cor de fundo ajustada */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
-
 
 .form-container {
     display: flex;
@@ -49,7 +48,7 @@ body {
 
 .form-heading {
     text-align: center;
-    color: #4f46e5;
+    color: #4f46e5; /* Azul principal */
     font-size: 1.7em;
     font-weight: bold;
     margin-bottom: 1em;
@@ -61,7 +60,7 @@ body {
     border-radius: 12px;
     padding: 0.5em;
     background-color: #ffffff;
-    border: 1px solid #d1d9e6;
+    border: 1px solid #d1d9e6; /* Tons claros para bordas */
     box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.03);
 }
 
@@ -74,12 +73,22 @@ body {
     font-size: 1em;
 }
 
+.input-field:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.2);
+}
+
+.form-field i {
+    margin-right: 10px;
+    color: #4f46e5;
+}
+
 .sendMessage-btn {
     cursor: pointer;
     padding: 1em;
     border-radius: 12px;
     border: none;
-    background-color: #6c63ff;
+    background-color: #4f46e5; /* Azul principal */
     color: #ffffff;
     font-size: 1em;
     font-weight: bold;
@@ -88,11 +97,11 @@ body {
 }
 
 .sendMessage-btn:hover {
-    background-color: #5753c9;
-    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+    background-color: #3734b6; /* Azul escuro */
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
 }
 
-.voltar_btn{
+.voltar_btn {
     align-self: center;
     cursor: pointer;
     padding: 4px;
@@ -100,27 +109,40 @@ body {
     border: none;
     height: 30%;
     width: 20%;
-    background-color: #6c63ff;
+    background-color: #4f46e5; /* Azul principal */
     color: #ffffff;
     font-size: 1em;
     font-weight: bold;
     transition: all 0.3s ease;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
 }
+
+.voltar_btn:hover {
+    background-color: #3734b6;
+}
+
+
 .message {
     text-align: center;
     font-size: 1em;
     padding: 0.8em;
     border-radius: 8px;
     margin-top: 1em;
-    background-color: #f1f1f1;
+    background-color: #e3e9f7; /* Fundo claro */
     color: #333;
     box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.success {
-    background-color: #d4edda;
-    color: #155724;
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+    padding-left: 10px;
 }
 
 .error {
@@ -149,5 +171,5 @@ body {
 }
 
 .produto-lista div:hover {
-    background-color: #f1f1f1;
+    background-color: #e3e9f7; /* Fundo hover claro */
 }
